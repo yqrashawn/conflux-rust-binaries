@@ -1,0 +1,16 @@
+FROM amd64/rust:latest
+
+RUN apt-get clean
+RUN apt-get update
+RUN apt-get install -y apt-utils 
+RUN apt-get install -y lsb-release
+RUN apt-get install -y software-properties-common
+RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+
+RUN git clone https://github.com/Conflux-Chain/conflux-rust.git 
+WORKDIR conflux-rust
+RUN git checkout v0.1.10
+RUN cargo -V && cargo update
+COPY indocker-build.sh .
+
+CMD ["./indocker-build.sh"]
